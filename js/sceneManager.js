@@ -11,6 +11,7 @@ function SceneManager(canvas) {
   const renderer = buildRenderer(screenDimensions)
   const camera = buildCamera(screenDimensions)
   const controls = createControls(camera)
+  const sceneSubjects = createSceneSubjects(scene)
 
   function buildScene() {
     const scene = new THREE.Scene()
@@ -24,9 +25,9 @@ function SceneManager(canvas) {
     const DPR = /* (window.devicePixelRatio)? window.devicePixelRatio : */ 1
     renderer.setPixelRatio(DPR) 
     renderer.setSize(width, height)
-    /* SHADOWS */ 
-    /* renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFoftShadowMap */
+    /* SHADOWS */
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFoftShadowMap
 
     return renderer
 
@@ -48,6 +49,12 @@ function SceneManager(canvas) {
     const controls = new THREE.OrbitControls(camera)
 
     return controls
+  }
+
+  function createSceneSubjects(scene) {
+    const sceneSubjects = new SceneSubjects(scene) 
+
+    return sceneSubjects
   }
 
   this.update = function() {
