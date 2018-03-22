@@ -1,9 +1,11 @@
+//manages the subjects (lights, meshes and physics)
 function SceneSubjects(scene) {
 
   const sceneMeshes = SceneMeshes(scene)
   const sceneLights = SceneLights(scene)
   const scenePhysics = ScenePhysics(scene)
 
+  //Links Physical objects to meshes 
   function updatePhysics(scenePhysics, sceneMeshes) {
 
     sceneMeshes.cube.position.copy(scenePhysics.bodyCube.position)
