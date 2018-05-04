@@ -56,6 +56,10 @@ function SceneManager(canvas) {
     height: canvas.height
   };
 
+  var stats = new Stats();
+  stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+  document.body.appendChild(stats.dom);
+
   var scene = buildScene();
   var renderer = buildRenderer(screenDimensions);
   var camera = buildCamera(screenDimensions);
@@ -133,6 +137,8 @@ function SceneManager(canvas) {
 
     renderer.render(scene, camera);
     controls.update();
+    stats.begin();
+    stats.end();
 
     then = new Date().getTime() / 100;
   };

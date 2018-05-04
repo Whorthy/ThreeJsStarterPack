@@ -14,6 +14,10 @@ export function SceneManager(canvas) {
     height: canvas.height 
   }
 
+  const stats = new Stats();
+  stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+  document.body.appendChild( stats.dom );
+
   const scene = buildScene()
   const renderer = buildRenderer(screenDimensions)
   const camera = buildCamera(screenDimensions)
@@ -86,6 +90,8 @@ export function SceneManager(canvas) {
 
     renderer.render(scene, camera)
     controls.update()
+    stats.begin()
+    stats.end()
     
     then = new Date().getTime() / 100
   }
