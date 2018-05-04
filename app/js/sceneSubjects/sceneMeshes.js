@@ -1,4 +1,4 @@
-function SceneMeshes(scene) {
+export function SceneMeshes(scene) {
 
   const pi = 3.1415
 

@@ -1,0 +1,28 @@
+{
+  "name": "threejsstarterpack",
+  "version": "1.1.0",
+  "description": "A basic boilerplate for three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whorthy/ThreeJsStarterPack.git"
+  },
+  "author": "tom.moraiz@hetic.net",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/whorthy/ThreeJsStarterPack/issues"
+  },
+  "homepage": "https://github.com/whorthy/ThreeJsStarterPack#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browser-sync": "^2.24.4",
+    "browserify": "^16.2.0",
+    "gulp": "^3.9.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}

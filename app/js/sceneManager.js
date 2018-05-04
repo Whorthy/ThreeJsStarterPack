@@ -2,7 +2,10 @@
 /*
   Sets up the scene with camera, renderer, controls and other shit.
 */
-function SceneManager(canvas) {
+
+import {SceneSubjects} from "./sceneSubjects/sceneSubjects.js"
+
+export function SceneManager(canvas) {
 
   let then = new Date().getTime() / 100 
 

@@ -4,6 +4,8 @@
   Calls the render function. 
 */
 
+import {SceneManager} from "./sceneManager.js"
+
 const canvas = document.getElementById("renderCanvas")
 
 const sceneManager = new SceneManager(canvas)

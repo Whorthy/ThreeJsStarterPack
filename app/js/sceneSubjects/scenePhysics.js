@@ -1,4 +1,4 @@
-function ScenePhysics(scene) {
+export function ScenePhysics(scene) {
 
   const world = new CANNON.World()
   const timeStep = 1/60

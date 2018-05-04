@@ -1,4 +1,4 @@
-function SceneLights(scene) {
+export function SceneLights(scene) {
 
   const generalLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1)
   scene.add(generalLight)

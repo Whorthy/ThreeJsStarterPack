@@ -1,5 +1,9 @@
 //manages the subjects (lights, meshes and physics)
-function SceneSubjects(scene) {
+import {SceneLights} from "./sceneLights.js"
+import {SceneMeshes} from "./sceneMeshes.js"
+import {ScenePhysics} from "./scenePhysics.js"
+
+export function SceneSubjects(scene) {
 
   const sceneMeshes = SceneMeshes(scene)
   const sceneLights = SceneLights(scene)
