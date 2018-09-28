@@ -23,6 +23,14 @@
     "browser-sync": "^2.24.4",
     "browserify": "^16.2.0",
     "gulp": "^3.9.1",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "babel-plugin-import-to-require": "^1.0.0",
+    "eslint": "^4.19.1",
+    "glslify": "^6.3.1"
+  },
+  "browserify": {
+    "transform": [
+      "glslify"
+    ]
   }
 }

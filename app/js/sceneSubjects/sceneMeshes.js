@@ -1,3 +1,5 @@
+import glsl from 'glslify'
+
 export function SceneMeshes(scene) {
 
   const pi = 3.1415
@@ -9,9 +11,19 @@ export function SceneMeshes(scene) {
   scene.add(plane)
   plane.rotation.x = - (pi / 2)
 
-  const cubeGeometry = new THREE.BoxGeometry( 1,1,1);
-  const cubeMaterial = new THREE.MeshBasicMaterial({color: 0xffffff})
+  const cubeGeometry = new THREE.BoxBufferGeometry( 1,1,1);
+  const cubeMaterial = new THREE.ShaderMaterial({
+    vertexShader: glsl.file('../../shaders/vertexShader'),
+    fragmentShader: glsl.file('../../shaders/fragmentShader')
+  })
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+
+  let displacement = new Float32Array(cube.geometry.attributes.position.count)
+  cubeGeometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1))
+  for ( let i = 0; i < cube.geometry.attributes.position.count; i++ ) {
+    displacement[i] = Math.random() * .2
+  }
+
   cube.castShadow = false
   scene.add(cube)
 

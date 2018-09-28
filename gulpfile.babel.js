@@ -38,7 +38,9 @@ gulp.task('startServer', () => {
 gulp.task('watch', () => {
   gulp.watch(['./app/js/**/*.js'], ['js'])
   gulp.watch(['./app/*.html'], ['html'])
+  gulp.watch(['./app/shaders/*.glsl'], ['js'])
 })
 
 gulp.task('build', ["html", "libs", "js"])
 gulp.task('dev', ['startServer', 'watch'])
+gulp.task('default', ['dev'])

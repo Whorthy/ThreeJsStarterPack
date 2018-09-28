@@ -188,12 +188,15 @@ function SceneLights(scene) {
 }
 
 },{}],4:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.SceneMeshes = SceneMeshes;
+
+var glsl = require('glslify');
+
 function SceneMeshes(scene) {
 
   var pi = 3.1415;
@@ -205,9 +208,19 @@ function SceneMeshes(scene) {
   scene.add(plane);
   plane.rotation.x = -(pi / 2);
 
-  var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-  var cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+  var cubeGeometry = new THREE.BoxBufferGeometry(1, 1, 1);
+  var cubeMaterial = new THREE.ShaderMaterial({
+    vertexShader: glsl(["#define GLSLIFY 1\nvarying vec3 vNormal;\nattribute float displacement; \n\nvoid main() {\n\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}"]),
+    fragmentShader: glsl(["#define GLSLIFY 1\nvoid main() {\n  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n}"])
+  });
   var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+  var displacement = new Float32Array(cube.geometry.attributes.position.count);
+  cubeGeometry.addAttribute('displacement', new THREE.BufferAttribute(displacement, 1));
+  for (var i = 0; i < cube.geometry.attributes.position.count; i++) {
+    displacement[i] = Math.random() * .2;
+  }
+
   cube.castShadow = false;
   scene.add(cube);
 
@@ -219,7 +232,7 @@ function SceneMeshes(scene) {
   return meshes;
 }
 
-},{}],5:[function(require,module,exports){
+},{"glslify":7}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -294,4 +307,16 @@ function SceneSubjects(scene) {
   };
 } //manages the subjects (lights, meshes and physics)
 
-},{"./sceneLights.js":3,"./sceneMeshes.js":4,"./scenePhysics.js":5}]},{},[1]);
+},{"./sceneLights.js":3,"./sceneMeshes.js":4,"./scenePhysics.js":5}],7:[function(require,module,exports){
+module.exports = function(strings) {
+  if (typeof strings === 'string') strings = [strings]
+  var exprs = [].slice.call(arguments,1)
+  var parts = []
+  for (var i = 0; i < strings.length-1; i++) {
+    parts.push(strings[i], exprs[i] || '')
+  }
+  parts.push(strings[i])
+  return parts.join('')
+}
+
+},{}]},{},[1]);
