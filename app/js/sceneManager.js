@@ -1,111 +1,130 @@
-
-/*
-  Sets up the scene with camera, renderer, controls and other shit.
-*/
-
+import {Scene, Color, WebGLRenderer, PerspectiveCamera} from "three"
+import OrbitControls from "three-orbitcontrols"
 import {SceneSubjects} from "./sceneSubjects/sceneSubjects.js"
 
-export function SceneManager(canvas) {
+/*
+  Sets up the scene with camera, renderer, controls and other utlities.
+*/
 
-  let then = new Date().getTime() / 100 
+class SceneManager
+{
+  //------------------------------------------------------------------------- Constructor
 
-  const screenDimensions = {
-    width: canvas.width,
-    height: canvas.height 
+  constructor(canvas)
+  {
+    this.canvas = canvas
+
+    this.screenDimensions = {
+      height: this.canvas.height,
+      width: this.canvas.width
+    }
+
+    this.scene = this.SceneBuilder()
+    this.camera = this.CameraBuilder(this.canvas)
+    this.renderer = this.RendererBuilder(this.canvas)
+    this.controls = this.ControlsBuilder(this.camera, this.renderer)
+    this.then = new Date().getTime() / 100
+    this.sceneSubjects = this.CreateSceneSubjects()
+
   }
 
-  const stats = new Stats();
-  stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-  document.body.appendChild( stats.dom );
+  //------------------------------------------------------------------------- Methods
 
-  const scene = buildScene()
-  const renderer = buildRenderer(screenDimensions)
-  const camera = buildCamera(screenDimensions)
-  const controls = createControls(camera)
-  const sceneSubjects = createSceneSubjects(scene)
-
-  //initiate the THREE.js scene
-  function buildScene() {
+  // we initialize the scene with a black background
+  SceneBuilder()
+  {
     const scene = new THREE.Scene()
+
     scene.background = new THREE.Color('#000')
 
-    return scene;
+    return scene
+
   }
 
-  //Sets up the renderer
-  function buildRenderer({width, height}) {
-    const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true})
+  // we create the renderer with some 
+  RendererBuilder({width, height})
+  {
+    const renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas,
+      antialias: true,
+      alpha: true
+    })
+
+    const devicePixelRatio = /* (window.devicePixelRatio)? window.devicePixelRatio : */ 1 //Manages the pixel ratio. Uncomment to enable retina support (performance hungry)
+
     renderer.setSize(width, height)
-    /* DEVICE PIXEL RATIO*/
-    const DPR = /* (window.devicePixelRatio)? window.devicePixelRatio : */ 1 //Manages the pixel ratio. Uncomment to enable retina support (performance hungry)
-    renderer.setPixelRatio(DPR) 
-    /* SHADOWS */
+    renderer.setPixelRatio(devicePixelRatio)
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFoftShadowMap
 
     return renderer
-
   }
 
-  //Sets ups camera and place it in the scene
-  function buildCamera({width, height}) {
+  CameraBuilder({width, height})
+  {
     const aspectRatio = width / height
     const fov = 60
     const nearPlane = 0.1
     const farPlane = 1000
+
     const camera = new THREE.PerspectiveCamera(fov, aspectRatio, nearPlane, farPlane)
+
     camera.position.z = 10
     camera.position.y = 3
 
-    return camera
+    return camera 
+
   }
 
-  //orbital controls setup
-  function createControls(camera) {
-    const controls = new THREE.OrbitControls(camera)
+  ControlsBuilder(camera, renderer)
+  {
+    const controls = new OrbitControls(camera, renderer.domElement)
 
     return controls
+
   }
 
-  function createSceneSubjects(scene) {
-    const sceneSubjects = new SceneSubjects(scene) 
+  CreateSceneSubjects()
+  {
+    const sceneSubjects = new SceneSubjects(this.scene)
 
     return sceneSubjects
+
   }
 
-  //This fonction updates the scene and calls the renderers
-  this.update = function() {
-
+  Update()
+  {
     let now = new Date().getTime() / 100 
-    let delta = now - then
-    let frameTime = 60 / 1000
+    let delta = now - this.then
+    const frameTime = 60 / 1000
     
     //This makes sure physics update as if the refresh rate was 60fps regardless of actual framerate
     if (delta > frameTime ) {
       let frameNumber = delta / frameTime
       for (var i = 1; i < frameNumber; i++) {
-        sceneSubjects.update()
+        this.sceneSubjects.update()
       }
     }
 
-    renderer.render(scene, camera)
-    controls.update()
-    stats.begin()
-    stats.end()
+    this.renderer.render(this.scene, this.camera)
+    this.controls.update()
     
-    then = new Date().getTime() / 100
+    this.then = new Date().getTime() / 100
   }
 
-  //dynamically resize the scene and camera
-  this.onWindowResize = function() {
-    const {width, height} = canvas;
+  ResizeHandler({width, height})
+  {
 
-    screenDimensions.height = height
-    screenDimensions.width = width
+    this.screenDimensions.height = height
+    this.screenDimensions.width = width
 
-    camera.aspect = width / height 
-    camera.updateProjectionMatrix();
+    this.camera.aspect = width / height 
+    this.camera.updateProjectionMatrix();
 
-    renderer.setSize(width, height)
+    this.renderer.setSize(width, height)
+  
   }
+
 }
+
+export default SceneManager

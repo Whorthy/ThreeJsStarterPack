@@ -18,19 +18,23 @@
   "homepage": "https://github.com/whorthy/ThreeJsStarterPack#readme",
   "devDependencies": {
     "babel-core": "^6.26.3",
+    "babel-plugin-import-to-require": "^1.0.0",
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
-    "browser-sync": "^2.24.4",
-    "browserify": "^16.2.0",
-    "gulp": "^3.9.1",
-    "vinyl-source-stream": "^2.0.0",
-    "babel-plugin-import-to-require": "^1.0.0",
+    "browser-sync": "^2.26.3",
+    "browserify": "^16.2.3",
     "eslint": "^4.19.1",
-    "glslify": "^6.3.1"
+    "glslify": "^6.3.1",
+    "gulp": "^3.9.1",
+    "vinyl-source-stream": "^2.0.0"
   },
   "browserify": {
     "transform": [
       "glslify"
     ]
+  },
+  "dependencies": {
+    "three": "^0.100.0",
+    "three-orbitcontrols": "^2.99.1"
   }
 }

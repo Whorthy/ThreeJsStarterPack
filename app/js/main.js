@@ -4,7 +4,7 @@
   Calls the render function. 
 */
 
-import {SceneManager} from "./sceneManager.js"
+import SceneManager from "./sceneManager.js"
 
 const canvas = document.getElementById("renderCanvas")
 
@@ -27,12 +27,12 @@ function resizeCanvas() {
   canvas.height = canvas.offsetHeight
   canvas.width = canvas.offsetWidth
 
-  sceneManager.onWindowResize()
+  sceneManager.ResizeHandler(canvas)
 }
 
 //Scene render
 function render() {
   requestAnimationFrame(render)
-  sceneManager.update()
+  sceneManager.Update()
 }
 
