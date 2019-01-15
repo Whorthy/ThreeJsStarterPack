@@ -102,7 +102,7 @@ var SceneManager = function () {
       return scene;
     }
 
-    // we create the renderer with some 
+    // we create the renderer which has support for shadows and retina screens 
 
   }, {
     key: "RendererBuilder",
@@ -116,6 +116,7 @@ var SceneManager = function () {
         alpha: true
       });
 
+      // retina support 
       var devicePixelRatio = /* (window.devicePixelRatio)? window.devicePixelRatio : */1; //Manages the pixel ratio. Uncomment to enable retina support (performance hungry)
 
       renderer.setSize(width, height);
@@ -143,6 +144,9 @@ var SceneManager = function () {
 
       return camera;
     }
+
+    // We add orbital controls to turn around the scene 
+
   }, {
     key: "ControlsBuilder",
     value: function ControlsBuilder(camera, renderer) {
@@ -157,14 +161,18 @@ var SceneManager = function () {
 
       return sceneSubjects;
     }
+
+    // update loop. This is ran for each frame 
+
   }, {
     key: "Update",
     value: function Update() {
+
+      //This makes sure physics update as if the refresh rate was 60fps regardless of actual framerate
       var now = new Date().getTime() / 100;
       var delta = now - this.then;
       var frameTime = 60 / 1000;
 
-      //This makes sure physics update as if the refresh rate was 60fps regardless of actual framerate
       if (delta > frameTime) {
         var frameNumber = delta / frameTime;
         for (var i = 1; i < frameNumber; i++) {
@@ -172,11 +180,14 @@ var SceneManager = function () {
         }
       }
 
+      this.then = new Date().getTime() / 100;
+
       this.renderer.render(this.scene, this.camera);
       this.controls.update();
-
-      this.then = new Date().getTime() / 100;
     }
+
+    // We make it so when the window is resized, so is the canvas and the camera to avoid image distorsion
+
   }, {
     key: "ResizeHandler",
     value: function ResizeHandler(_ref3) {

@@ -41,7 +41,7 @@ class SceneManager
 
   }
 
-  // we create the renderer with some 
+  // we create the renderer which has support for shadows and retina screens 
   RendererBuilder({width, height})
   {
     const renderer = new THREE.WebGLRenderer({
@@ -50,6 +50,7 @@ class SceneManager
       alpha: true
     })
 
+    // retina support 
     const devicePixelRatio = /* (window.devicePixelRatio)? window.devicePixelRatio : */ 1 //Manages the pixel ratio. Uncomment to enable retina support (performance hungry)
 
     renderer.setSize(width, height)
@@ -76,6 +77,7 @@ class SceneManager
 
   }
 
+  // We add orbital controls to turn around the scene 
   ControlsBuilder(camera, renderer)
   {
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -92,13 +94,15 @@ class SceneManager
 
   }
 
+  // update loop. This is ran for each frame 
   Update()
   {
+
+    //This makes sure physics update as if the refresh rate was 60fps regardless of actual framerate
     let now = new Date().getTime() / 100 
     let delta = now - this.then
     const frameTime = 60 / 1000
     
-    //This makes sure physics update as if the refresh rate was 60fps regardless of actual framerate
     if (delta > frameTime ) {
       let frameNumber = delta / frameTime
       for (var i = 1; i < frameNumber; i++) {
@@ -106,12 +110,15 @@ class SceneManager
       }
     }
 
+    this.then = new Date().getTime() / 100
+
+
     this.renderer.render(this.scene, this.camera)
     this.controls.update()
     
-    this.then = new Date().getTime() / 100
   }
 
+  // We make it so when the window is resized, so is the canvas and the camera to avoid image distorsion
   ResizeHandler({width, height})
   {
 
