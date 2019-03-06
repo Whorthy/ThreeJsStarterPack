@@ -1,22 +1,24 @@
 import gulp from "gulp"
+import { series, watch } from "gulp"
 import browserSync from "browser-sync"
 import browserify from "browserify"
 import babelify from "babelify"
 import source from "vinyl-source-stream"
+import { start } from "repl";
 
-gulp.task('html', () => {
+const html = () => {
   return gulp.src('./app/*.html')
              .pipe(gulp.dest('./build'))
              .pipe(browserSync.stream())
-})
+}
 
-gulp.task('libs', () => {
+const libs = () => {
   return gulp.src('./app/libs/*.js')
              .pipe(gulp.dest('./build/libs'))
              .pipe(browserSync.stream())
-})
+}
 
-gulp.task('js', () => {
+const js = () => {
   return browserify({
       entries: ['./app/js/main.js']
   })
@@ -27,13 +29,13 @@ gulp.task('js', () => {
   .pipe(source("bundle.js"))
   .pipe(gulp.dest('./build/js'))
   .pipe(browserSync.stream())
-})
+}
 
-gulp.task('startServer', () => {
+const startServer = () => {
   browserSync.init({
     server: "./build"
   })
-})
+}
 
 gulp.task('watch', () => {
   gulp.watch(['./app/js/**/*.js'], ['js'])
@@ -41,6 +43,6 @@ gulp.task('watch', () => {
   gulp.watch(['./app/shaders/*.glsl'], ['js'])
 })
 
-gulp.task('build', ["html", "libs", "js"])
-gulp.task('dev', ['startServer', 'watch'])
-gulp.task('default', ['dev'])
+exports.build = series(html, libs, js)
+exports.dev = series(startServer, watch)
+exports.default = series(startServer, watch)

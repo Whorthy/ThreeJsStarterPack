@@ -19,13 +19,14 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-import-to-require": "^1.0.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "babelify": "^8.0.0",
     "browser-sync": "^2.26.3",
     "browserify": "^16.2.3",
     "eslint": "^4.19.1",
     "glslify": "^6.3.1",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "vinyl-source-stream": "^2.0.0"
   },
   "browserify": {
