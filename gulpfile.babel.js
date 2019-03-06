@@ -37,11 +37,11 @@ const startServer = () => {
   })
 }
 
-const watch = () => {
+gulp.task('watch', () => {
   gulp.watch(['./app/js/**/*.js'], ['js'])
   gulp.watch(['./app/*.html'], ['html'])
   gulp.watch(['./app/shaders/*.glsl'], ['js'])
-}
+})
 
 exports.build = series(html, libs, js)
 exports.dev = series(startServer, watch)
